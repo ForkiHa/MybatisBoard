@@ -150,7 +150,7 @@
 	<servlet-class>mvc.controller2.ControllerUsingURI</servlet-class>
 	<init-param>
 		<param-name>propertyConfig</param-name>
-		<param-value>E:\ha\workspace\AugJSP\WebContent\WEB-INF\commandHandlerURI.properties</param-value>
+		<param-value>C:\Users\user1\git\AugJSP\AugJSP\WebContent\WEB-INF\commandHandlerURI.properties</param-value>
 	</init-param>
 </servlet>
 <servlet-mapping>
