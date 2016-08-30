@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	
+	 <insert id="addBoard" parameterType="board.BoardDataBean">
+		insert into board values(board_num.NEXTVAL,#{writer},#{email},#{subject},#{passwd},#{reg_date},#{readcount},#{ref},#{re_step},#{re_level},#{content},#{ip})
+	</insert>
+	
+	<update id="upBoard" parameterType="board.BoardDataBean">
+	<![CDATA[
+		update board set re_step=re_step+1 where ref= #{ref} and re_step > #{re_step}
+	]]>	
+	</update>
+	
+	<update id="upRead" parameterType="int">
+		update board set readcount=readcount+1 where num = #{num}
+	</update> 
+	
+	
+	<select id="maxBoard" resultType="int">
+		select max(num) from board
+	</select>
+	
+	<select id="pageBoard" parameterType="HashMap" resultType="board.BoardDataBean">
+	<![CDATA[
+	select num,writer,subject,email,content,passwd,reg_date,readcount,ref,re_step,re_level,ip,r 
+	from (select num,writer,subject,email,content,passwd,reg_date,readcount,ref,re_step,re_level,ip,rownum r 
+	from (select num,writer,subject,email,content,passwd,reg_date,readcount,ref,re_step,re_level,ip from board order by ref desc, re_step asc) order by ref desc, re_step asc ) where r >= #{start} and r <= #{end} 
+	]]>					
+	</select>
+	
+	<select id="allCount" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<select id="conSel" parameterType="int" resultType="board.BoardDataBean">
+		select * from board where num = #{num}
+	</select>
+	<!--
+	<update id="upMem" parameterType="test.vo.MembersVo">
+		update member set pwd=#{pwd} where id='ACTIVE'
+		<if test="id !=null">
+			AND id = #{id}
+		</if>
+	</update>
+	
+	<delete id="delMem" parameterType="String">
+		delete from member where id=#{id}
+	</delete>
+	
+
+	<select id="getList" resultType="test.vo.MembersVo">
+		select * from member
+	</select>
+	
+	<select id="getOne" parameterType="String" resultType="test.vo.MembersVo">
+		select * from member where id=#{id}
+	</select>
+	컬럼의 이름과 변수의 이름이 같을때 저장 -->
+	
+</mapper>
